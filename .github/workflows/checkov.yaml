@@ -11,7 +11,7 @@ jobs:
         id: checkov
         uses: bridgecrewio/checkov-action@master
         with:
-          directory: deploy/charts
+          directory: deploy/chart
           quiet: false # optional: display only failed checks
           soft_fail: false # optional: do not return an error code if there are failed checks
           framework: helm # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
