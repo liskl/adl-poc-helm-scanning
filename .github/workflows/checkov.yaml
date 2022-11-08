@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Checkov action (helm)
-        id: checkov
+        id: checkov-helm
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: deploy/chart
@@ -36,7 +36,7 @@ jobs:
       - name: setup kustomize # this installs kustomize for checkov to use.
         uses: imranismail/setup-kustomize@v2
       - name: Run Checkov action (kustomize)
-        id: checkov
+        id: checkov-kustomize
         uses: bridgecrewio/checkov-action@v12
         with:
           directory: deploy/kustomize/overlays/poc
