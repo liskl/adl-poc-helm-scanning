@@ -3,6 +3,12 @@ jobs:
   checkov-job:
     runs-on: ubuntu-latest
     name: checkov-action
+    permissions:
+      # required for all workflows
+      security-events: write
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
@@ -17,3 +23,11 @@ jobs:
           framework: helm # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
           var_file: ./deploy/chart/values-poc.yaml
+      - name: upload checkov report
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: results.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: checkov
