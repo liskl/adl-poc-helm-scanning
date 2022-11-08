@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Run Checkov action
+      - name: Run Checkov action (helm)
         id: checkov
         uses: bridgecrewio/checkov-action@v12
         with:
@@ -22,12 +22,35 @@ jobs:
           soft_fail: true # optional: do not return an error code if there are failed checks
           framework: helm # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
+          output_file_path: results-helm.sarif
           var_file: ./deploy/chart/values-poc.yaml
-      - name: upload checkov report
+      - name: upload checkov report (helm)
         uses: github/codeql-action/upload-sarif@v2
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: results.sarif
+          sarif_file: results-helm.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
-          category: checkov
+          category: checkov-helm
+
+      - name: setup kustomize # this installs kustomize for checkov to use.
+        uses: imranismail/setup-kustomize@v2
+      - name: Run Checkov action (kustomize)
+        id: checkov
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          directory: deploy/kustomize/overlays/poc
+          quiet: false # optional: display only failed checks
+          soft_fail: true # optional: do not return an error code if there are failed checks
+          framework: kustomize # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+          output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
+          output_file_path: results-kustomize.sarif
+
+      - name: upload checkov report (kustomize)
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: results-kustomize.sarif
+          # Optional category for the results
+          # Used to differentiate multiple results for one commit
+          category: checkov-kustomize
