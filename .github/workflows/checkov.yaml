@@ -11,11 +11,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout repo
-        uses: actions/checkout@master
+        uses: actions/checkout@v2.5.0
 
       - name: Run Checkov action
         id: checkov
-        uses: bridgecrewio/checkov-action@master
+        uses: bridgecrewio/checkov-action@v12.1834.0
         with:
           directory: deploy/chart
           quiet: false # optional: display only failed checks
@@ -24,7 +24,7 @@ jobs:
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
           var_file: ./deploy/chart/values-poc.yaml
       - name: upload checkov report
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v2.1.31
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: results.sarif
