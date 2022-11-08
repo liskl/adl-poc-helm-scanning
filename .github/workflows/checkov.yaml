@@ -22,13 +22,13 @@ jobs:
           soft_fail: true # optional: do not return an error code if there are failed checks
           framework: helm # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
-          output_file_path: results-helm.sarif
+          output_file_path: results.sarif
           var_file: ./deploy/chart/values-poc.yaml
       - name: upload checkov report (helm)
         uses: github/codeql-action/upload-sarif@v2
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: results-helm.sarif
+          sarif_file: results.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
           category: checkov-helm
@@ -44,13 +44,13 @@ jobs:
           soft_fail: true # optional: do not return an error code if there are failed checks
           framework: kustomize # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
           output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
-          output_file_path: results-kustomize.sarif
+          output_file_path: results.sarif
 
       - name: upload checkov report (kustomize)
         uses: github/codeql-action/upload-sarif@v2
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: results-kustomize.sarif
+          sarif_file: results.sarif
           # Optional category for the results
           # Used to differentiate multiple results for one commit
           category: checkov-kustomize
