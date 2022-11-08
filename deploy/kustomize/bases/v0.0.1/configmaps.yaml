@@ -1,0 +1,8 @@
+---
+# Source: poc/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: poc-configmap
+data:
+  isUseless: "true"
